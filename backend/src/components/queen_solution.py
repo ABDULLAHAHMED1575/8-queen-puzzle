@@ -34,7 +34,6 @@ def find_solution(n=8):
                 board[row,col] = 0
     
     board = np.zeros((n,n),dtype=int)
-    print(board)
 
     solve(board,0)
 

@@ -40,10 +40,6 @@ def validation(n=8):
     place_queen = session['place_queen']
     shapes_with_queens = set(session.get('shapes_with_queens', []))
     position_to_shape = session['position_to_shape']
-    
-    print(place_queen,': Place Queen')
-    print(shapes_with_queens,": Shape with queens")
-    print(position_to_shape,": Position to shape")
 
     data = request.get_json()
     board = data.get('board')
@@ -65,7 +61,6 @@ def validation(n=8):
         return jsonify({'success': False, "message": shape_message})
     
     place_queen.append((new_row, new_col))
-    
     session['place_queen'] = place_queen
     session['shapes_with_queens'] = list(shapes_with_queens)
     

@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-    baseURL:'http://localhost:8000',
+    baseURL:'http://localhost:5000',
     timeout:5000,
     headers:{
         'Content-Type': 'application/json',
@@ -21,13 +21,23 @@ const gameApi = {
             throw error;
         }
     },
-    placeQueen: async () => {
+    placeQueen: async (boardData) => {
         try{
-            const response = await api.post('/queen',{board});
+            const response = await api.post('/queen',{board:boardData});
             return response.data;
         }
         catch(error){
             console.error('Error placing queen: ', error);
+            throw error;
+        }
+    },
+    removeQueen: async (row, col) => {
+        try {
+            const response = await api.post('/remove-queen', { position: [row, col] });
+            return response.data;
+        }
+        catch (error) {
+            console.error('Error removing queen: ', error);
             throw error;
         }
     },

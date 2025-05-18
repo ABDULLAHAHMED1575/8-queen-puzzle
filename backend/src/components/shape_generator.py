@@ -49,15 +49,36 @@ def generate_shape(solution, num_shape=8):
     remaining_cells = [tuple(pos) for pos in unassigned_indices]
     random.shuffle(remaining_cells)
 
-
+    shape_can_grow = list(range(len(shapes)))
     for cell in remaining_cells:
-        shape_id = random.randint(0, len(shapes)-1)
+        row,col = cell
+
+        adjacent_shapes = []
+
+        for dr,dc in [(0,1),(1,0),(0,-1),(-1,0)]:
+            adj_row,adj_col = row+dr,col+dc
+
+            if not (0<=adj_row < n and 0 <= adj_col < n):
+                continue
+
+            if(adj_row,adj_col) in cell_assigned:
+                for shape_id,shape in enumerate(shapes):
+                    if(adj_row,adj_col) in shape:
+                        adjacent_shapes.append(shape_id)
+                        break
+            valid_adjacent_shapes = [s for s in adjacent_shapes if s in shape_can_grow]
+            if valid_adjacent_shapes:
+                shape_id = random.choice(valid_adjacent_shapes)
+            else:
+                shape_id = random.randint(0, len(shapes)-1)
         shapes[shape_id].append(cell)
         cell_assigned.add(cell)
+        if len(shapes[shape_id]) >=n+2:
+            if shape_id in shape_can_grow:
+                shape_can_grow.remove(shape_id)
 
     json_shapes = []
     for shape in shapes:
         json_shape = [[int(pos[0]), int(pos[1])] for pos in shape]
         json_shapes.append(json_shape)
-    print(json_shapes)
     return json_shapes

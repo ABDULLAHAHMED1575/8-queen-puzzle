@@ -1,7 +1,7 @@
 from flask import Flask, session
 from flask_cors import CORS
 from dotenv import load_dotenv
-from src.routes.queen_routes import get_data, get_game
+from src.routes.queen_routes import get_data, get_game, remove_game
 import os
 import secrets
 
@@ -27,6 +27,10 @@ def queen_route():
 @app.route("/queen", methods=['GET'])
 def game_route():
     return get_game()
+
+@app.route("/remove-queen", methods=['POST'])
+def remove_route():
+    return remove_game()
 
 @app.route('/')
 def starter():
